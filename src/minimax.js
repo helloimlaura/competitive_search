@@ -6,7 +6,7 @@
  *
  * Note that you should read
  * the pre-written functions.
- * 
+ *
  * Contents:
  * 1. minimaxWrapper:   Pre-written
  * 2. heuristic:        Pre-written
@@ -97,7 +97,13 @@ const heuristic = (state, maximizingPlayer) => {
 const isBaseCase = (state, depth) => {
     const possibleSuccessorStates = state.nextStates();
     const numberPossibleSuccessorStates = possibleSuccessorStates.length;
-    // Your code here.
+    if (depth === 0){
+        return true;
+    } else if (numberPossibleSuccessorStates === 0){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /*
@@ -114,8 +120,9 @@ const isBaseCase = (state, depth) => {
 const minimax = (state, depth, maximizingPlayer) => {
     if (isBaseCase(state, depth)) {
         // Invoke heuristic
+        return heuristic(state, maximizingPlayer);
     } else {
-        // Possible states is an array of future states, of 
+        // Possible states is an array of future states, of
         // the same kind that gets passed into the "state"
         // paramter in minimax.
         //
@@ -127,6 +134,29 @@ const minimax = (state, depth, maximizingPlayer) => {
         const currentPlayer = state.nextMovePlayer;
         // Reduce to further
         // invocations of minimax.
+
+        console.log("current: ", currentPlayer);
+        console.log("maximizing: ", maximizingPlayer);
+
+        if (currentPlayer == maximizingPlayer){
+            let maxPossible = 0;
+            possibleStates.forEach(possibleState => {
+                console.log("in maximizing player", maxPossible)
+                if (minimax(possibleState, depth - 1, maximizingPlayer) > maxPossible) {
+                    maxPossible = (heuristic(possibleState, maximizingPlayer))
+                }
+            })
+            return maxPossible;
+        } else if (currentPlayer == minimizingPlayer) {
+            let minPossible = 0;
+            possibleStates.forEach(possibleState => {
+                // console.log("in minimizing player", minPossible);
+                if (minimax(possibleState, depth - 1, maximizingPlayer) < minPossible) {
+                    minPossible = (heuristic(possibleState, maximizingPlayer))
+                }
+            })
+            return minPossible;
+        }
     }
 }
 
@@ -139,7 +169,7 @@ const minimax = (state, depth, maximizingPlayer) => {
 const minimaxAlphaBeta = (state, depth, maximizingPlayer) => {
 
 	const minimaxAlphaBetaInner = (state, depth, alpha, beta) => {
-        
+
         if (isBaseCase(state, depth)) {
             // Invoke heuristic
         } else {

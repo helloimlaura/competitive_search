@@ -2,7 +2,7 @@
 // into the makeMove function.
 module.exports = (minimaxWrapper) => (state) => {
 
-    // "state" is an object with a few methods 
+    // "state" is an object with a few methods
     //
 	// Find whose move it is; 'x' or 'o'
 	const playerMoving = state.nextMovePlayer;
